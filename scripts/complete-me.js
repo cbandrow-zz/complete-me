@@ -1,4 +1,7 @@
 import { Node } from './node'
+const text = "/usr/share/dict/words"
+const fs = require('fs');
+
 
 export class CompleteMe {
   constructor() {
@@ -54,6 +57,14 @@ export class CompleteMe {
       this.suggestWords(nextLetter, prefix + letter, suggestions)
     })
     return suggestions
+  }
+
+  populate() {
+    let dictionary = fs.readFileSync(text).toString().trim().split('\n')
+
+    dictionary.forEach((word) =>{
+      this.insert(word);
+    })
   }
 
   count() {

@@ -2,6 +2,8 @@ require('locus');
 import { assert } from 'chai';
 import { CompleteMe } from '../scripts/complete-me'
 import { Node } from '../scripts/node'
+const text = "/usr/share/dict/words"
+const fs = require('fs');
 
 describe('Trie basic attributes', () => {
   let completion = new CompleteMe();
@@ -93,7 +95,6 @@ describe('Trie Suggestion', () => {
     completion.insert("picture")
 
     let autoSuggest = completion.suggest('pic')
-    console.log(autoSuggest);
 
     assert.equal(autoSuggest.includes("pick"), true)
     assert.equal(autoSuggest.includes("picture"), true)
@@ -109,5 +110,30 @@ describe('Trie Suggestion', () => {
     assert.equal(autoSuggest.includes("fin"), true)
     assert.equal(autoSuggest.includes("finish"), true)
     assert.equal(autoSuggest.includes("finally"), true)
+  })
+})
+
+describe('Trie Populate: Store the Dictionary', () => {
+  let completion = new CompleteMe();
+
+  it('should be loaded in as an array', () => {
+    let dictionary = fs.readFileSync(text).toString().trim().split('\n')
+
+    assert.equal(dictionary.length, 235886)
+  })
+
+  it('should be called in the Trie', () =>{
+    completion.populate()
+
+    assert.equal(completion.data.length > 235000, true);
+  })
+
+  it('should auto suggest some options from the dictionary.', ()=>{
+    let autoSuggest = completion.suggest('fi')
+
+    assert.equal(autoSuggest.includes("fish"), true)
+    assert.equal(autoSuggest.includes("finite"), true)
+    assert.equal(autoSuggest.includes("fin"), true)
+    assert.equal(autoSuggest.includes("fiction"), true)
   })
 })
