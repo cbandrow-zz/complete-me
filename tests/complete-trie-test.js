@@ -90,12 +90,13 @@ describe('Trie Suggestion', () => {
 
   it('should suggest a small array', () => {
     completion.insert("pick")
-    completion.insert("pizzle")
+    completion.insert("picture")
 
-    completion.suggest('pic')
+    let autoSuggest = completion.suggest('pic')
+    console.log(autoSuggest);
 
-    assert.deepEqual(completion.suggestions.includes("picture"), true)
-    assert.deepEqual(completion.suggestions.includes("pick"), true)
+    assert.equal(autoSuggest.includes("pick"), true)
+    assert.equal(autoSuggest.includes("picture"), true)
   })
 
   it('should suggest another small array', () => {
@@ -103,11 +104,10 @@ describe('Trie Suggestion', () => {
     completion.insert("finish")
     completion.insert("finally")
 
-    completion.suggest('fi')
-    console.log(completion.suggestions)
+    let autoSuggest = completion.suggest('fi')
 
-    assert.deepEqual(completion.suggestions.includes("fin"), true)
-    assert.deepEqual(completion.suggestions.includes("finish"), true)
-    assert.deepEqual(completion.suggestions.includes("finally"), true)
+    assert.equal(autoSuggest.includes("fin"), true)
+    assert.equal(autoSuggest.includes("finish"), true)
+    assert.equal(autoSuggest.includes("finally"), true)
   })
 })

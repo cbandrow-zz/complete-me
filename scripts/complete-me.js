@@ -4,7 +4,6 @@ export class CompleteMe {
   constructor() {
     this.head = new Node('');
     this.data = [];
-    this.suggestions = [];
   }
 
   insert (userInput) {
@@ -25,34 +24,36 @@ export class CompleteMe {
   }
 
   suggest(prefix) {
-    this.suggestions = [];
     let letters = prefix.split('');
     let currentNode = this.head;
+
+    let suggestions = [];
 
     letters.forEach((letter) =>{
       if (currentNode.children[letter]) {
         currentNode = currentNode.children[letter]
+        return
       } else {
         return null;
       }
     })
 
-    return this.suggestWords(currentNode, prefix)
+    return suggestions = this.suggestWords(currentNode, prefix, suggestions)
   }
 
-  suggestWords(currentNode, prefix) {
+  suggestWords(currentNode, prefix, suggestions) {
     let letterKeys = Object.keys(currentNode.children)
 
     if (currentNode.isWord === true) {
-      this.suggestions.push(prefix)
+      suggestions.push(prefix)
     }
 
     letterKeys.forEach((letter)=>{
       let nextLetter = currentNode.children[letter]
 
-      this.suggestWords(nextLetter, prefix + letter)
+      this.suggestWords(nextLetter, prefix + letter, suggestions)
     })
-    return
+    return suggestions
   }
 
   count() {
