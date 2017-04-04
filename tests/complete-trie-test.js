@@ -111,20 +111,3 @@ describe('Trie Suggestion', () => {
     assert.deepEqual(completion.suggestions.includes("finally"), true)
   })
 })
-
-describe('Trie Find', () => {
-  let completion = new CompleteMe();
-
-  completion.insert("car")
-  completion.insert("cat")
-  completion.insert("cater");
-  it('return the node of a spcecific word', () => {
-    assert.deepEqual(completion.find('car'), completion.head.children['c'].children['a'].children['r']);
-  })
-
-  it('should return the node of similar words', () =>{
-    assert.deepEqual(completion.find('cat'), completion.head.children['c'].children['a'].children['t']);
-
-    assert.deepEqual(completion.find('cater'), completion.head.children['c'].children['a'].children['t'].children['e'].children['r']);
-  })
-})

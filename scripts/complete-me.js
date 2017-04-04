@@ -9,26 +9,17 @@ export class CompleteMe {
 
   insert (userInput) {
     let currentNode = this.head;
-    let holdLetters = ''
 
     this.data.push(userInput)
     userInput.split('').forEach(letter => {
 
       if (currentNode.children[letter]) {
         currentNode = currentNode.children[letter];
-
-        // holdLetters = holdLetters + letter;
-        // currentNode.address = holdLetters;
         return;
       }
 
       currentNode.children[letter] = new Node(letter);
       currentNode = currentNode.children[letter];
-
-      // holdLetters = holdLetters + letter;
-      // currentNode.address = holdLetters;
-      // holdLetters = currentNode.address + letter;
-
     })
     currentNode.isWord = true;
   }
@@ -45,7 +36,7 @@ export class CompleteMe {
         return null;
       }
     })
-    
+
     return this.suggestWords(currentNode, prefix)
   }
 
@@ -66,22 +57,5 @@ export class CompleteMe {
 
   count() {
     return this.data.length
-  }
-
-
-  find(input) {
-    // uses Address, not needed.
-    let currentNode = this.head;
-
-    input.split('').forEach( letter => {
-      if (currentNode.children[letter] !== letter) {
-        currentNode = currentNode.children[letter];
-      }
-      if (currentNode.data === input.length) {
-        return currentNode;
-      }
-      return currentNode
-    })
-    return currentNode
   }
 }
