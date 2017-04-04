@@ -23,20 +23,18 @@ describe('Node Attributes', () => {
     assert.equal(node.isWord, false);
   })
 
-  it('should have an address which contains letters, but starts empty', () =>{
-    assert.equal(node.address, '');
-  })
-
-  it('should have an incompleted address before the last node', () =>{
+  it('should grab an incomplete word', () =>{
     let completion = new CompleteMe;
     completion.insert("fire")
-    assert.deepEqual(completion.head.children['f'].children['i'].children['r'].address, 'fir');
+    assert.property(completion.head.children['f'].children['i'].children, 'r');
+    assert.equal(completion.head.children['f'].children['i'].children['r'].isWord, false);
   })
 
-  it('should have a completed address at the last node', () =>{
+  it('should grab a complete word', () =>{
     let completion = new CompleteMe;
     completion.insert("fire")
-    assert.deepEqual(completion.head.children['f'].children['i'].children['r'].children['e'].address, 'fire');
+    assert.property(completion.head.children['f'].children['i'].children['r'].children, 'e');
+    assert.equal(completion.head.children['f'].children['i'].children['r'].children['e'].isWord, true);
   })
 
 })

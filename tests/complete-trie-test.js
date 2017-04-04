@@ -59,23 +59,6 @@ describe('Trie Insert', () => {
   })
 })
 
-describe('Trie Find', () => {
-  let completion = new CompleteMe();
-
-  completion.insert("car")
-  completion.insert("cat")
-  completion.insert("cater");
-  it('return the node of a spcecific word', () => {
-    assert.deepEqual(completion.find('car'), completion.head.children['c'].children['a'].children['r']);
-  })
-
-  it('should return the node of similar words', () =>{
-    assert.deepEqual(completion.find('cat'), completion.head.children['c'].children['a'].children['t']);
-
-    assert.deepEqual(completion.find('cater'), completion.head.children['c'].children['a'].children['t'].children['e'].children['r']);
-  })
-})
-
 describe('Trie Count', () => {
   let completion = new CompleteMe();
 
@@ -106,15 +89,42 @@ describe('Trie Suggestion', () => {
   let completion = new CompleteMe();
 
   it('should suggest a small array', () => {
+    completion.insert("pick")
+    completion.insert("pizzle")
 
-    assert.deepEqual(completion.suggestion(), );
+    completion.suggest('pic')
+
+    assert.deepEqual(completion.suggestions.includes("picture"), true)
+    assert.deepEqual(completion.suggestions.includes("pick"), true)
   })
 
-  it('should suggest a bigger array', () => {
-    assert.deepEqual(completion.suggestion(), );
+  it('should suggest another small array', () => {
+    completion.insert("fin")
+    completion.insert("finish")
+    completion.insert("finally")
+
+    completion.suggest('fi')
+    console.log(completion.suggestions)
+
+    assert.deepEqual(completion.suggestions.includes("fin"), true)
+    assert.deepEqual(completion.suggestions.includes("finish"), true)
+    assert.deepEqual(completion.suggestions.includes("finally"), true)
+  })
+})
+
+describe('Trie Find', () => {
+  let completion = new CompleteMe();
+
+  completion.insert("car")
+  completion.insert("cat")
+  completion.insert("cater");
+  it('return the node of a spcecific word', () => {
+    assert.deepEqual(completion.find('car'), completion.head.children['c'].children['a'].children['r']);
   })
 
-  it('should suggest a large array', () => {
-    assert.deepEqual(completion.suggestion(), );
+  it('should return the node of similar words', () =>{
+    assert.deepEqual(completion.find('cat'), completion.head.children['c'].children['a'].children['t']);
+
+    assert.deepEqual(completion.find('cater'), completion.head.children['c'].children['a'].children['t'].children['e'].children['r']);
   })
 })
