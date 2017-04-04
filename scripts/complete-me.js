@@ -13,8 +13,10 @@ export class CompleteMe {
     userInput.split('').forEach(letter => {
 
       if (currentNode.children[letter]) {
-        return currentNode = currentNode.children[letter];
+        currentNode = currentNode.children[letter];
+        return;
       }
+
       currentNode.children[letter] = new Node(letter);
       currentNode = currentNode.children[letter];
       holdLetters = holdLetters + letter;
@@ -24,7 +26,31 @@ export class CompleteMe {
     currentNode.isWord = true;
   }
 
-  find(userInput) {
+  find(input) {
+    // let findLetters = '';
+    let currentNode = this.head;
 
+    input.split('').forEach( letter => {
+      if (currentNode.children[letter] !== letter) {
+        currentNode = currentNode.children[letter];
+      }
+      if (currentNode.address === input) {
+        return currentNode;
+      }
+      return currentNode
+    })
+    return currentNode
+  }
+
+  suggest(address) {
+    let suggestion = [];
+    let currentNode = this.find(address)
+    // find node
+    // check node children isWord ? addToArray : false
+    // suggest children nodes
+    // return array of children
+  }
+  count() {
+    return this.data.length
   }
 }

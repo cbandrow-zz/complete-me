@@ -5,7 +5,7 @@ import { Node } from '../scripts/node'
 
 describe('Node Attributes', () => {
 
-let node = new Node("ugh");
+  let node = new Node("ugh");
 
   it('should be an instance of Node', () => {
     assert.instanceOf(node, Node, "node is a new node instance");
