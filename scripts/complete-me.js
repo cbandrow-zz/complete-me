@@ -1,40 +1,30 @@
-import Node from '../scripts/node'
+import { Node } from './node'
 
-export default class CompleteMe {
+export class CompleteMe {
   constructor() {
-    this.head = new Node();
+    this.head = new Node('');
     this.data = []
   }
+  insert (userInput) {
+    let currentNode = this.head;
+    let holdLetters = '';
 
-  insert(input) {
-    this.data.push(input);
-    let current = this.head;
-    let holder = input.split('');
+    this.data.push(userInput)
+    userInput.split('').forEach(letter => {
 
-    while (current.children[holder[0]]) {
-      current = current.children[holder.shift()]
-    }
-    while (!current.children[holder[1]]) {
-      if (!holder[0]) {
-        return
-      } else {
-        current = new Node(holder[0], holder[1])
-        holder.shift();
+      if (currentNode.children[letter]) {
+        return currentNode = currentNode.children[letter];
       }
-    }
+      currentNode.children[letter] = new Node(letter);
+      currentNode = currentNode.children[letter];
+      holdLetters = holdLetters + letter;
+      currentNode.address = holdLetters;
+
+    })
+    currentNode.isWord = true;
   }
-  //   this.data.push(str)
-  //   let word = str.split('')
-  //
-  //   word.forEach((val, i) => {
-  //     if (!val.children[i + 1]) {
-  //       let newNode = new Node(word[i + 1], this.insert(word.splice( i + 1, word.length)))
-  //       console.log(newNode);
-  //     } else if (!word[i + 1]) {
-  //       return this.isWord = true;
-  //     } else {
-  //       val.children[i + 1] = this.insert(word.splice(i + 1, word.length))
-  //     }
-  //   })
-  // }
+
+  find(userInput) {
+
+  }
 }

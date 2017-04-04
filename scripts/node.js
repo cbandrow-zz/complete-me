@@ -1,8 +1,8 @@
-export default class Node {
-  constructor(data, children = null) {
-    this.data = data;
+export class Node {
+  constructor(data = null, children = {}) {
+    this.data = data
     this.children = children
     this.isWord = false;
+    this.address = ''
   }
-
 }
