@@ -56,7 +56,11 @@ export class CompleteMe {
     //push currentNode, prefix, and the empty array to the next function.
     suggestions = this.suggestWords(currentNode, prefix, suggestions)
 
+    //map through suggestions, since each one is logged as an object with a key value pair.
+
     let prioritySuggestions = suggestions.map((word) =>{
+      //splits into array based off of where the : is
+      //returns the word to a new Priority array that has everything sorted by highest counter.
       return word.split(":").pop()
     })
 
@@ -85,11 +89,12 @@ export class CompleteMe {
     //then returns down the stack.
     letterKeys.forEach((letter)=>{
       let nextLetter = currentNode.children[letter]
-      
+
       //move the nextletter to the next child in the node to evaluate it's children nodes.
-      //
+      //call suggestWords again, but with the nextLetter, prefix + current letter, and suggestions.
       this.suggestWords(nextLetter, prefix + letter, suggestions)
     })
+    //once everything is pulled off the stack, returns back suggestions plus the stored array.
     return suggestions
   }
 
@@ -97,25 +102,29 @@ export class CompleteMe {
     let letters = word.split('');
     let currentNode = this.head;
 
+    //navigate down by each letter. Finds last letter,
     letters.forEach((letter) =>{
 
       if (currentNode.children[letter]) {
         currentNode = currentNode.children[letter]
-        currentNode.isWord > 0 ? currentNode.isWord++ : null
       }
-      return
+      return currentNode
     })
+    currentNode.isWord > 0 ? currentNode.isWord++ : null
   }
 
   populate() {
+    //pull in dictionary
     let dictionary = fs.readFileSync(text).toString().trim().split('\n')
 
+    //throw it in the for loop. Iterate over each word and do insert it into trie data.
     dictionary.forEach((word) =>{
       this.insert(word);
     })
   }
 
   count() {
+    //just count the length of the whole darn thing. 
     return this.data.length
   }
 }
