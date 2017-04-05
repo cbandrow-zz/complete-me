@@ -186,7 +186,7 @@ describe('Trie Select Relevant Suggestions', () => {
 
   })
 
-  it('should sort the suggestions array based on words of highest value', () =>{
+  it.only('should sort the suggestions array based on words of highest value', () =>{
     let completion = new CompleteMe();
 
     completion.insert('pickle');
