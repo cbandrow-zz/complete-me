@@ -1,7 +1,6 @@
 require('locus');
 import { assert } from 'chai';
 import { CompleteMe } from '../scripts/complete-me'
-import { Node } from '../scripts/node'
 const text = "/usr/share/dict/words"
 const fs = require('fs');
 
@@ -157,7 +156,9 @@ describe('Trie Select Relevant Suggestions', () => {
 
     let completion = new CompleteMe();
 
-    completion.populate();
+    completion.insert('frog');
+
+    assert.deepEqual(completion.head.children['f'].children['r'].children['o'].children['g'].isWord, 1)
 
     completion.select('frog');
 
@@ -165,9 +166,9 @@ describe('Trie Select Relevant Suggestions', () => {
 
   })
 
-  it.only('should increase count every time it is called', ()=>{
+  it('should increase count every time it is called', ()=>{
     let completion = new CompleteMe();
-    // completion.populate();
+
     completion.insert('frog');
     completion.insert('from');
     completion.insert('froglegs');
@@ -177,12 +178,12 @@ describe('Trie Select Relevant Suggestions', () => {
     completion.select('frog');
     completion.select('froglegs');
 
-    let suggestion = completion.suggest('fro');
-    console.log(suggestion);
+    completion.suggest('fro');
 
     assert.deepEqual(completion.head.children['f'].children['r'].children['o'].children['g'].isWord, 5)
     assert.deepEqual(completion.head.children['f'].children['r'].children['o'].children['m'].isWord, 1)
     assert.deepEqual(completion.head.children['f'].children['r'].children['o'].children['g'].children['l'].children['e'].children['g'].children['s'].isWord, 2)
+
   })
 
   it('should sort the suggestions array based on words of highest value', () =>{
@@ -205,10 +206,8 @@ describe('Trie Select Relevant Suggestions', () => {
     completion.select('pizzazz');
 
     let suggestion = completion.suggest('pi');
-    console.log(suggestion)
 
     assert.deepEqual(suggestion, ['pizza', 'pint', 'pizzazz', 'pizzle', 'pity', 'pine', 'pills', 'pickle'])
-
   })
 
 })

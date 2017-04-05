@@ -19,7 +19,7 @@ describe('Node Attributes', () => {
     assert.deepEqual(node.children, {});
   })
 
-  it('should not be a word by default', () => {
+  it('should not be a word by default, or have a zero count', () => {
     assert.equal(node.isWord, 0);
   })
 

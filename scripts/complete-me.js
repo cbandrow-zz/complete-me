@@ -2,7 +2,6 @@ import { Node } from './node'
 const text = "/usr/share/dict/words"
 const fs = require('fs');
 
-
 export class CompleteMe {
   constructor() {
     this.head = new Node('');
@@ -10,6 +9,7 @@ export class CompleteMe {
   }
 
   insert (userInput) {
+    
     let currentNode = this.head;
 
     this.data.push(userInput)
@@ -42,7 +42,6 @@ export class CompleteMe {
     })
 
     suggestions = this.suggestWords(currentNode, prefix, suggestions)
-    console.log(suggestions);
 
     let prioritySuggestions = suggestions.map((word) =>{
       return word.split(":").pop()
