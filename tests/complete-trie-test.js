@@ -186,7 +186,7 @@ describe('Trie Select Relevant Suggestions', () => {
 
   })
 
-  it('should sort the suggestions array based on words of highest value', () =>{
+  it.only('should sort the suggestions array based on words of highest value', () =>{
     let completion = new CompleteMe();
 
     completion.insert('pickle');
@@ -206,6 +206,9 @@ describe('Trie Select Relevant Suggestions', () => {
     completion.select('pizzazz');
 
     let suggestion = completion.suggest('pi');
+
+    console.log(JSON.stringify(completion, null, 4))
+
 
     assert.deepEqual(suggestion, ['pizza', 'pint', 'pizzazz', 'pizzle', 'pity', 'pine', 'pills', 'pickle'])
   })

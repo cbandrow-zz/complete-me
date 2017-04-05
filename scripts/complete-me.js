@@ -9,7 +9,7 @@ export class CompleteMe {
   }
 
   insert (userInput) {
-    
+
     let currentNode = this.head;
 
     this.data.push(userInput)
@@ -79,10 +79,10 @@ export class CompleteMe {
 
       if (currentNode.children[letter]) {
         currentNode = currentNode.children[letter]
-        currentNode.isWord > 0 ? currentNode.isWord++ : null
       }
-      return
+      return currentNode
     })
+    currentNode.isWord > 0 ? currentNode.isWord++ : null
   }
 
   populate() {
