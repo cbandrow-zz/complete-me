@@ -5,6 +5,8 @@ import { Node } from '../scripts/node'
 const text = "/usr/share/dict/words"
 const fs = require('fs');
 
+//console.log(JSON.stringify(completion, null, 4))
+
 describe('Trie basic attributes', () => {
   let completion = new CompleteMe();
 
@@ -61,7 +63,7 @@ describe('Trie Insert', () => {
   })
 })
 
-describe('Trie Count', () => {
+describe('Trie Count data length', () => {
   let completion = new CompleteMe();
 
   it('should start at zero', () => {
@@ -98,12 +100,15 @@ describe('Trie Suggestion', () => {
 
     assert.equal(autoSuggest.includes("pick"), true)
     assert.equal(autoSuggest.includes("picture"), true)
+
   })
 
   it('should suggest another small array', () => {
     completion.insert("fin")
     completion.insert("finish")
     completion.insert("finally")
+
+
 
     let autoSuggest = completion.suggest('fi')
 
@@ -131,9 +136,79 @@ describe('Trie Populate: Store the Dictionary', () => {
   it('should auto suggest some options from the dictionary.', ()=>{
     let autoSuggest = completion.suggest('fi')
 
+
     assert.equal(autoSuggest.includes("fish"), true)
     assert.equal(autoSuggest.includes("finite"), true)
     assert.equal(autoSuggest.includes("fin"), true)
     assert.equal(autoSuggest.includes("fiction"), true)
   })
+})
+
+describe('Trie Select Relevant Suggestions', () => {
+
+
+  it('have a function called Select', () =>{
+    let completion = new CompleteMe();
+
+    assert.isFunction(completion.select, true);
+  })
+
+  it('should select a word based on input, and increment its node isWord value', () =>{
+
+    let completion = new CompleteMe();
+
+    completion.populate();
+
+    completion.select('frog');
+
+    assert.deepEqual(completion.head.children['f'].children['r'].children['o'].children['g'].isWord, 2)
+
+  })
+
+  it.only('should increase count every time it is called', ()=>{
+    let completion = new CompleteMe();
+    // completion.populate();
+    completion.insert('frog');
+    completion.insert('from');
+    completion.insert('froglegs');
+
+    completion.select('frog');
+    completion.select('frog');
+    completion.select('frog');
+    completion.select('froglegs');
+
+    let suggestion = completion.suggest('fro');
+    console.log(suggestion);
+
+    assert.deepEqual(completion.head.children['f'].children['r'].children['o'].children['g'].isWord, 5)
+    assert.deepEqual(completion.head.children['f'].children['r'].children['o'].children['m'].isWord, 1)
+    assert.deepEqual(completion.head.children['f'].children['r'].children['o'].children['g'].children['l'].children['e'].children['g'].children['s'].isWord, 2)
+  })
+
+  it('should sort the suggestions array based on words of highest value', () =>{
+    let completion = new CompleteMe();
+
+    completion.insert('pickle');
+    completion.insert('pine');
+    completion.insert('pills');
+    completion.insert('pizza');
+    completion.insert('pizzazz');
+    completion.insert('pizzle');
+    completion.insert('pint');
+    completion.insert('pity');
+
+    completion.select('pizza');
+    completion.select('pizza');
+    completion.select('pizza');
+    completion.select('pint');
+    completion.select('pint');
+    completion.select('pizzazz');
+
+    let suggestion = completion.suggest('pi');
+    console.log(suggestion)
+
+    assert.deepEqual(suggestion, ['pizza', 'pint', 'pizzazz', 'pizzle', 'pity', 'pine', 'pills', 'pickle'])
+
+  })
+
 })

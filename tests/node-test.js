@@ -20,7 +20,7 @@ describe('Node Attributes', () => {
   })
 
   it('should not be a word by default', () => {
-    assert.equal(node.isWord, false);
+    assert.equal(node.isWord, 0);
   })
 
   it('should grab an incomplete word', () =>{

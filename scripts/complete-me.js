@@ -23,16 +23,16 @@ export class CompleteMe {
       currentNode.children[letter] = new Node(letter);
       currentNode = currentNode.children[letter];
     })
-    currentNode.isWord = true;
+    currentNode.isWord += 1;
   }
 
   suggest(prefix) {
     let letters = prefix.split('');
     let currentNode = this.head;
-
     let suggestions = [];
 
     letters.forEach((letter) =>{
+
       if (currentNode.children[letter]) {
         currentNode = currentNode.children[letter]
         return
@@ -41,14 +41,27 @@ export class CompleteMe {
       }
     })
 
-    return suggestions = this.suggestWords(currentNode, prefix, suggestions)
+    suggestions = this.suggestWords(currentNode, prefix, suggestions)
+    console.log(suggestions);
+
+    let prioritySuggestions = suggestions.map((word) =>{
+      return word.split(":").pop()
+    })
+
+    return prioritySuggestions
   }
 
   suggestWords(currentNode, prefix, suggestions) {
     let letterKeys = Object.keys(currentNode.children)
+    let count = currentNode.isWord
 
-    if (currentNode.isWord === true) {
-      suggestions.push(prefix)
+    if (currentNode.isWord > 0) {
+      let updatedPrefix = count + " :" + prefix
+
+      suggestions.push(updatedPrefix)
+      suggestions.sort((a, b) =>{
+        return a < b
+      })
     }
 
     letterKeys.forEach((letter)=>{
@@ -57,6 +70,20 @@ export class CompleteMe {
       this.suggestWords(nextLetter, prefix + letter, suggestions)
     })
     return suggestions
+  }
+
+  select(word) {
+    let letters = word.split('');
+    let currentNode = this.head;
+
+    letters.forEach((letter) =>{
+
+      if (currentNode.children[letter]) {
+        currentNode = currentNode.children[letter]
+        currentNode.isWord > 0 ? currentNode.isWord++ : null
+      }
+      return
+    })
   }
 
   populate() {
