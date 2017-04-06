@@ -80,11 +80,8 @@ export class CompleteMe {
 
     if (currentNode.isWord > 0) {
       let updatedPrefix = count + " :" + prefix
-
+      
       suggestions.push(updatedPrefix)
-      suggestions.sort((a, b) =>{
-        return a < b
-      })
     }
 
     letterKeys.forEach((letter)=>{

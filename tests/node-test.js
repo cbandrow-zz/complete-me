@@ -25,6 +25,7 @@ describe('Node Attributes', () => {
 
   it('should grab an incomplete word', () =>{
     let completion = new CompleteMe;
+
     completion.insert("fire")
     assert.property(completion.head.children['f'].children['i'].children, 'r');
     assert.equal(completion.head.children['f'].children['i'].children['r'].isWord, false);

@@ -278,7 +278,4 @@ describe('Trie Select Relevant Suggestions', () => {
     assert.deepEqual(autoSuggest[1], "draft");
     assert.deepEqual(autoSuggest[2], "draw");
   })
-
-
-
 })
