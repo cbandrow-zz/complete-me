@@ -302,7 +302,7 @@ describe('Trie Select Relevant Suggestions from Dictionary', () => {
     completion.select('based');
     completion.select('basic');
 
-    let autoSuggest = completion.suggest('bas');
+    let autoSuggest = completion.suggest('ba');
 
     assert.deepEqual(autoSuggest[0], "bass");
     assert.deepEqual(autoSuggest[1], "base");
@@ -344,7 +344,7 @@ describe('Trie Select Relevant Suggestions from Dictionary', () => {
     completion.select('drain');
     completion.select('draw');
 
-    let autoSuggest = completion.suggest('dra');
+    let autoSuggest = completion.suggest('dr');
 
     assert.deepEqual(autoSuggest[0], "dragon");
     assert.deepEqual(autoSuggest[1], "draft");
