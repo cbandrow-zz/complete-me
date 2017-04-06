@@ -62,6 +62,28 @@ describe('Trie Insert', () => {
   })
 })
 
+describe('Trie should Find things', () => {
+  let completion = new CompleteMe();
+
+  it('should be a function', () => {
+    assert.isFunction(completion.find, true);
+  })
+
+  it('should find a word', () => {
+    completion.insert("pants");
+
+    assert.deepEqual(completion.find('pants'), completion.head.children['p'].children['a'].children['n'].children['t'].children['s']);
+  })
+
+  it('should find a differt word', () => {
+    completion.insert("banana");
+    completion.insert("papaya");
+
+    assert.deepEqual(completion.find('banana'), completion.head.children['b'].children['a'].children['n'].children['a'].children['n'].children['a']);
+  })
+
+})
+
 describe('Trie Count data length', () => {
   let completion = new CompleteMe();
 
@@ -206,10 +228,68 @@ describe('Trie Select Relevant Suggestions', () => {
     assert.deepEqual(suggestion, ['pizza', 'pint', 'pizzazz', 'pizzle', 'pity', 'pine', 'pills', 'pickle'])
   })
 })
+
+describe('Trie Sort Function', () => {
+  let completion = new CompleteMe();
+
+  it('should be a function', () => {
+    assert.isFunction(completion.sortSuggestions, true)
+  })
+
+  it('should return an array', () => {
+    let nums = [5, 7, 22, 55, 66]
+    let arr = completion.sortSuggestions(nums)
+
+    assert.equal(Array.isArray(arr), true)
+  })
+
+  it('should return an array, in DESCENDING order', () => {
+    let nums = [5, 7, 22, 55, 66]
+    let arr = completion.sortSuggestions(nums)
+
+    assert.deepEqual(arr, [66, 55, 22, 7, 5])
+  })
+
+  it('should sorts Words with higher counts based on Suggestions', () => {
+
+    completion.insert('pickle');
+    completion.insert('pine');
+    completion.insert('pills');
+    completion.insert('pizza');
+    completion.insert('pint');
+
+    completion.select('pizza');
+    completion.select('pizza');
+    completion.select('pizza');
+    completion.select('pint');
+    completion.select('pint');
+
+    let autoSuggest = completion.suggest("pi");
+
+    assert.deepEqual(autoSuggest, ['pizza', 'pint', 'pine', 'pills', 'pickle'])
+  })
+
+})
+
 describe('Trie Select Relevant Suggestions from Dictionary', () => {
   let completion = new CompleteMe();
 
   completion.populate()
+
+  it('should count the number of similar words from the dictionary', () =>{
+
+    completion.select('bass');
+    completion.select('base');
+    completion.select('base');
+    completion.select('basoon')
+    completion.select('bass')
+    completion.select('bass');
+    completion.select('based');
+    completion.select('basic');
+
+    assert.deepEqual(completion.head.children['b'].children['a'].children['s'].children['s'].isWord, 4)
+    assert.deepEqual(completion.head.children['b'].children['a'].children['s'].children['e'].isWord, 3)
+  })
 
   it('should auto present options in the dictionary', () =>{
 

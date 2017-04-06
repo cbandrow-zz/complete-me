@@ -48,12 +48,10 @@ export class CompleteMe {
     currentNode.isWord > 0 ? currentNode.isWord++ : null
   }
 
-  suggest(prefix) {
+  find(prefix) {
+
     let letters = prefix.split('');
     let currentNode = this.head;
-    let suggestions = [];
-    let updateSuggestions;
-    let prioritySuggestions;
 
     letters.forEach((letter) =>{
 
@@ -64,6 +62,15 @@ export class CompleteMe {
         return null;
       }
     })
+
+    return currentNode
+  }
+
+  suggest(prefix) {
+    let currentNode = this.find(prefix);
+    let suggestions = [];
+    let updateSuggestions;
+    let prioritySuggestions;
 
     suggestions = this.suggestWords(currentNode, prefix, suggestions)
     updateSuggestions = this.sortSuggestions(suggestions);
@@ -80,7 +87,7 @@ export class CompleteMe {
 
     if (currentNode.isWord > 0) {
       let updatedPrefix = count + " :" + prefix
-      
+
       suggestions.push(updatedPrefix)
     }
 
