@@ -23,13 +23,37 @@ export class CompleteMe {
       currentNode.children[letter] = new Node(letter);
       currentNode = currentNode.children[letter];
     })
-    currentNode.isWord += 1;
+    currentNode.isWord > 1 ? currentNode.isWord = 1 : currentNode.isWord += 1;
+  }
+
+  populate() {
+    let dictionary = fs.readFileSync(text).toString().trim().split('\n')
+
+    dictionary.forEach((word) =>{
+      this.insert(word);
+    })
+  }
+
+  select(word) {
+    let letters = word.split('');
+    let currentNode = this.head;
+
+    letters.forEach((letter) =>{
+
+      if (currentNode.children[letter]) {
+        currentNode = currentNode.children[letter]
+      }
+      return currentNode
+    })
+    currentNode.isWord > 0 ? currentNode.isWord++ : null
   }
 
   suggest(prefix) {
     let letters = prefix.split('');
     let currentNode = this.head;
     let suggestions = [];
+    let updateSuggestions;
+    let prioritySuggestions;
 
     letters.forEach((letter) =>{
 
@@ -42,8 +66,8 @@ export class CompleteMe {
     })
 
     suggestions = this.suggestWords(currentNode, prefix, suggestions)
-
-    let prioritySuggestions = suggestions.map((word) =>{
+    updateSuggestions = this.sortSuggestions(suggestions);
+    prioritySuggestions = updateSuggestions.map((word) =>{
       return word.split(":").pop()
     })
 
@@ -71,27 +95,21 @@ export class CompleteMe {
     return suggestions
   }
 
-  select(word) {
-    let letters = word.split('');
-    let currentNode = this.head;
+  sortSuggestions(arr) {
+    let holder;
 
-    letters.forEach((letter) =>{
-
-      if (currentNode.children[letter]) {
-        currentNode = currentNode.children[letter]
+    for (let i = 0; i < arr.length - 1; i++) {
+      for (let j = 0; j < arr.length - 1; j++) {
+        if (arr[j + 1] > arr[j]) {
+          holder = arr[j];
+          arr[j] = arr[j + 1];
+          arr[j + 1] = holder;
+        }
       }
-      return currentNode
-    })
-    currentNode.isWord > 0 ? currentNode.isWord++ : null
+    }
+    return arr;
   }
 
-  populate() {
-    let dictionary = fs.readFileSync(text).toString().trim().split('\n')
-
-    dictionary.forEach((word) =>{
-      this.insert(word);
-    })
-  }
 
   count() {
     return this.data.length

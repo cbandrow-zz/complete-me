@@ -120,6 +120,8 @@ describe('Trie Suggestion', () => {
 describe('Trie Populate: Store the Dictionary', () => {
   let completion = new CompleteMe();
 
+  completion.populate()
+
   it('should be loaded in as an array', () => {
     let dictionary = fs.readFileSync(text).toString().trim().split('\n')
 
@@ -127,14 +129,13 @@ describe('Trie Populate: Store the Dictionary', () => {
   })
 
   it('should be called in the Trie', () =>{
-    completion.populate()
+
 
     assert.equal(completion.data.length > 235000, true);
   })
 
   it('should auto suggest some options from the dictionary.', ()=>{
     let autoSuggest = completion.suggest('fi')
-
 
     assert.equal(autoSuggest.includes("fish"), true)
     assert.equal(autoSuggest.includes("finite"), true)
@@ -180,13 +181,12 @@ describe('Trie Select Relevant Suggestions', () => {
 
     completion.suggest('fro');
 
-    assert.deepEqual(completion.head.children['f'].children['r'].children['o'].children['g'].isWord, 5)
+    assert.deepEqual(completion.head.children['f'].children['r'].children['o'].children['g'].isWord, 4)
     assert.deepEqual(completion.head.children['f'].children['r'].children['o'].children['m'].isWord, 1)
     assert.deepEqual(completion.head.children['f'].children['r'].children['o'].children['g'].children['l'].children['e'].children['g'].children['s'].isWord, 2)
-
   })
 
-  it.only('should sort the suggestions array based on words of highest value', () =>{
+  it('should sort the suggestions array based on words of highest value', () =>{
     let completion = new CompleteMe();
 
     completion.insert('pickle');
@@ -207,10 +207,78 @@ describe('Trie Select Relevant Suggestions', () => {
 
     let suggestion = completion.suggest('pi');
 
-    console.log(JSON.stringify(completion, null, 4))
-
-
     assert.deepEqual(suggestion, ['pizza', 'pint', 'pizzazz', 'pizzle', 'pity', 'pine', 'pills', 'pickle'])
   })
+
+  it('should auto present options in the dictionary', () =>{
+    let completion = new CompleteMe();
+
+    completion.populate()
+
+    completion.select('bass');
+    completion.select('base');
+    completion.select('base');
+    completion.select('basoon')
+    completion.select('bass')
+    completion.select('bass');
+    completion.select('based');
+    completion.select('basic');
+
+    let autoSuggest = completion.suggest('bas');
+
+    assert.deepEqual(autoSuggest[0], "bass");
+    assert.deepEqual(autoSuggest[1], "base");
+  })
+
+  it('should auto present another set of options from the dictionary', () =>{
+    let completion = new CompleteMe();
+
+    completion.populate()
+
+    completion.select('plank');
+    completion.select('platypus');
+    completion.select('plant');
+    completion.select('platypus');
+    completion.select('planter');
+    completion.select('plan')
+    completion.select('plant')
+    completion.select('platypus');
+    completion.select('plant');
+    completion.select('plastic');
+    completion.select('platypus');
+
+    let autoSuggest = completion.suggest('pla');
+
+    assert.deepEqual(autoSuggest[0], "platypus");
+    assert.deepEqual(autoSuggest[1], "plant");
+  })
+
+  it('should auto present another ANOTHER set of options from the dictionary', () =>{
+    let completion = new CompleteMe();
+
+    completion.populate()
+
+    completion.select('draft');
+    completion.select('drain');
+    completion.select('drab');
+    completion.select('draw');
+    completion.select('dragon');
+    completion.select('draft');
+    completion.select('drag')
+    completion.select('dragon')
+    completion.select('draft');
+    completion.select('dragon');
+    completion.select('drag');
+    completion.select('drain');
+    completion.select('draw');
+
+    let autoSuggest = completion.suggest('dra');
+
+    assert.deepEqual(autoSuggest[0], "dragon");
+    assert.deepEqual(autoSuggest[1], "draft");
+    assert.deepEqual(autoSuggest[2], "draw");
+  })
+
+
 
 })
