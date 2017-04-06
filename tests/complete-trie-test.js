@@ -129,8 +129,6 @@ describe('Trie Populate: Store the Dictionary', () => {
   })
 
   it('should be called in the Trie', () =>{
-
-
     assert.equal(completion.data.length > 235000, true);
   })
 
@@ -158,11 +156,9 @@ describe('Trie Select Relevant Suggestions', () => {
     let completion = new CompleteMe();
 
     completion.insert('frog');
-
     assert.deepEqual(completion.head.children['f'].children['r'].children['o'].children['g'].isWord, 1)
 
     completion.select('frog');
-
     assert.deepEqual(completion.head.children['f'].children['r'].children['o'].children['g'].isWord, 2)
 
   })
@@ -209,11 +205,13 @@ describe('Trie Select Relevant Suggestions', () => {
 
     assert.deepEqual(suggestion, ['pizza', 'pint', 'pizzazz', 'pizzle', 'pity', 'pine', 'pills', 'pickle'])
   })
+})
+describe('Trie Select Relevant Suggestions from Dictionary', () => {
+  let completion = new CompleteMe();
+
+  completion.populate()
 
   it('should auto present options in the dictionary', () =>{
-    let completion = new CompleteMe();
-
-    completion.populate()
 
     completion.select('bass');
     completion.select('base');
@@ -231,9 +229,6 @@ describe('Trie Select Relevant Suggestions', () => {
   })
 
   it('should auto present another set of options from the dictionary', () =>{
-    let completion = new CompleteMe();
-
-    completion.populate()
 
     completion.select('plank');
     completion.select('platypus');
@@ -254,9 +249,6 @@ describe('Trie Select Relevant Suggestions', () => {
   })
 
   it('should auto present another ANOTHER set of options from the dictionary', () =>{
-    let completion = new CompleteMe();
-
-    completion.populate()
 
     completion.select('draft');
     completion.select('drain');
