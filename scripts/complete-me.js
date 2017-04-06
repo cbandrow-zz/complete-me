@@ -1,6 +1,4 @@
 import { Node } from './node'
-const text = "/usr/share/dict/words"
-const fs = require('fs');
 
 export class CompleteMe {
   constructor() {
@@ -12,7 +10,8 @@ export class CompleteMe {
 
     let currentNode = this.head;
 
-    this.data.push(userInput)
+    this.data.push(userInput);
+
     userInput.split('').forEach(letter => {
 
       if (currentNode.children[letter]) {
@@ -26,10 +25,8 @@ export class CompleteMe {
     currentNode.isWord > 1 ? currentNode.isWord = 1 : currentNode.isWord += 1;
   }
 
-  populate() {
-    let dictionary = fs.readFileSync(text).toString().trim().split('\n')
-
-    dictionary.forEach((word) =>{
+  populate(importArray) {
+    importArray.forEach((word) =>{
       this.insert(word);
     })
   }
@@ -43,6 +40,7 @@ export class CompleteMe {
       if (currentNode.children[letter]) {
         currentNode = currentNode.children[letter]
       }
+      //Remove this line
       return currentNode
     })
     currentNode.isWord > 0 ? currentNode.isWord++ : null
@@ -88,6 +86,8 @@ export class CompleteMe {
     if (currentNode.isWord > 0) {
       let updatedPrefix = count + " :" + prefix
 
+      //let updated = {name: prefix, count : count}
+
       suggestions.push(updatedPrefix)
     }
 
@@ -113,7 +113,6 @@ export class CompleteMe {
     }
     return arr;
   }
-
 
   count() {
     return this.data.length

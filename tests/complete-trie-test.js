@@ -3,8 +3,7 @@ import { assert } from 'chai';
 import { CompleteMe } from '../scripts/complete-me'
 const text = "/usr/share/dict/words"
 const fs = require('fs');
-
-//console.log(JSON.stringify(completion, null, 4))
+let dictionary = fs.readFileSync(text).toString().trim().split('\n')
 
 describe('Trie basic attributes', () => {
   let completion = new CompleteMe();
@@ -142,7 +141,7 @@ describe('Trie Suggestion', () => {
 describe('Trie Populate: Store the Dictionary', () => {
   let completion = new CompleteMe();
 
-  completion.populate()
+  completion.populate(dictionary)
 
   it('should be loaded in as an array', () => {
     let dictionary = fs.readFileSync(text).toString().trim().split('\n')
@@ -274,7 +273,7 @@ describe('Trie Sort Function', () => {
 describe('Trie Select Relevant Suggestions from Dictionary', () => {
   let completion = new CompleteMe();
 
-  completion.populate()
+  completion.populate(dictionary)
 
   it('should count the number of similar words from the dictionary', () =>{
 
